@@ -173,7 +173,16 @@ io.on('connection', (socket) => {
         });
 
         if (currentGame._price === Number(guess)) {
-            // Arrêt du round en cours pour éviter les multiples réponses
+            const sendDelayedMessageToSocket = (message, delay) => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        socket.emit('message', message);
+                        resolve();
+                    }, delay);
+                });
+            };
+
+                    // Arrêt du round en cours pour éviter les multiples réponses
             let price = currentGame._price;
             currentGame.endRound();
 
@@ -187,6 +196,11 @@ io.on('connection', (socket) => {
 
             // Envoyer la mise à jour du leaderboard à tous les clients
             io.to(gameId).emit('update leaderboard', currentGame.getLeaderboard());
+
+            await sendDelayedMessageToSocket({
+                playerName: 'System',
+                msg: `Votre score : ${currentGame.scores.get(playerName).score} point(s)`
+            }, 1000);
         }
     });
 })
