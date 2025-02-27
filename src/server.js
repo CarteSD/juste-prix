@@ -116,6 +116,11 @@ io.on('connection', (socket) => {
             currentGame._scores.get(playerName).connected = true;
         }
     });
+
+    // Rejoindre la room de cette partie
+    socket.join(gameId);
+    socket.username = pseudonyme;
+    socket.emit('join', pseudonyme);
 })
 
 

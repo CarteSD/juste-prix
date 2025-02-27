@@ -25,10 +25,12 @@
                 <h2 class="text-xl font-semibold text-center">La manche a commencé !</h2>
                 <p class="text-center">Le montant à deviner est compris entre 0 et 100</p>
             </div>
-            <div
-                    id="messages"
-                    class="flex-1 overflow-y-auto mb-4 p-4 rounded-lg dark:bg-night-2 bg-lavender-blush-2 min-h-0 break-words">
-                <p class="font-serif text-xl">Propositions en direct :</p>
+            <div class="flex-1 overflow-y-auto mb-4 p-4 rounded-lg dark:bg-night-2 bg-lavender-blush-2 min-h-0 break-words">
+                <div class="flex flex-col mb-4">
+                    <p class="font-serif text-xl">Chat en direct :</p>
+                    <p class="italic">Seuls les messages comportant uniquement des caractères numériques sont pris en compte</p>
+                </div>
+                <div id="messages"></div>
             </div>
             <div class="flex gap-2 items-center">
                 <div class="timer-wrapper">
