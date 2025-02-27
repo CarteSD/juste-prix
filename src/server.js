@@ -97,6 +97,27 @@ app.get('/403', (req, res) => {
 // Définition du répertoire racine du serveur
 app.use(express.static('public'));
 
+io.on('connection', (socket) => {
+    // Récupération du token et de l'ID de la partie depuis la requête de connexion Socket.IO
+    const token = socket.handshake.query.token;
+    const gameId = socket.handshake.query.gameId;
+
+    // Vérifier si la partie existe
+    if (!games.has(gameId)) {
+        return;
+    }
+
+    let currentGame = games.get(gameId);
+    let pseudonyme = '';
+
+    currentGame._scores.forEach((playerData, playerName) => {
+        if (playerData.token === token) {
+            pseudonyme = playerName;
+            currentGame._scores.get(playerName).connected = true;
+        }
+    });
+})
+
 
 server.listen(config.PORT, () => {
     console.log(`Server running on port ${config.PORT}`);
