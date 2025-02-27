@@ -94,7 +94,12 @@ socket.on('message', ({playerName, msg, comparator}) => {
 
 socket.on('new round', ({roundNumber}) => {
     messagesDiv.innerHTML += `<p class="font-bold">Manche n°${roundNumber}</p>`; // Affiche le numéro de la manche
+    messagesDiv.innerHTML += `<p>Entrez votre proposition de prix...</p>`;
     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
+    messageInput.disabled = false;
+    sendBtn.disabled = false;
+    sendBtn.classList.remove("btn-disabled");
+    sendBtn.classList.add("btn-primary");
 });
 
 // Fonction traitant la réception du signal 'update leaderboard' provenant du serveur
