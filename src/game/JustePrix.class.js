@@ -77,4 +77,12 @@ export class JustePrix {
                 uuid: data.uuid
             }));
     }
+
+    /**
+     * @brief Retourne un nombre aléatoire entre 0 et 1000
+     * @returns {number}
+     */
+    getRandomPrice() {
+        return Math.floor(Math.random() * 1000);
+    }
 }
