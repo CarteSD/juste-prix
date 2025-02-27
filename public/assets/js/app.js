@@ -14,6 +14,8 @@ const socket = io({
 const messageInput = document.getElementById('message-input');
 const messagesDiv = document.getElementById('messages');
 const sendBtn = document.getElementById('send-btn');
+const leaderboard_players = document.getElementById('leaderboard-players');
+
 
 // Initialisation de la variable playerName
 let playerName = null;
@@ -93,4 +95,32 @@ socket.on('message', ({playerName, msg, comparator}) => {
 socket.on('new round', ({roundNumber}) => {
     messagesDiv.innerHTML += `<p class="font-bold">Manche n°${roundNumber}</p>`; // Affiche le numéro de la manche
     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
+});
+
+// Fonction traitant la réception du signal 'update leaderboard' provenant du serveur
+socket.on('update leaderboard', (leaderboard) => {
+    leaderboard_players.innerHTML = ''; // Réinitialise le contenu
+
+    // Parcours le tableau des joueurs et les ajoute à la liste
+    leaderboard.forEach((player, index) => {
+        let rowP = document.createElement('p');
+        let medal = '';
+
+        // Attribue les émojis de médailles selon la position
+        switch (index) {
+            case 0:
+                medal = '🥇・';
+                break;
+            case 1:
+                medal = '🥈・';
+                break;
+            case 2:
+                medal = '🥉・';
+                break;
+        }
+
+        // Ajoute le contenu du message au paragraphe et ajoute le paragraphe à la div des messages
+        rowP.innerText = `${medal}${player.username} : ${player.score} point(s)`;
+        leaderboard_players.appendChild(rowP);
+    });
 });

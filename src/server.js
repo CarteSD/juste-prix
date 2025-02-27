@@ -135,6 +135,9 @@ io.on('connection', (socket) => {
         });
     }
 
+    // Envoi du leaderboard à jour
+    io.to(gameId).emit('update leaderboard', currentGame.getLeaderboard());
+
     // Vérification si la partie peut commencer
     if (currentGame._scores.size >= MIN_PLAYERS && !currentGame._isRoundActive && !currentGame.isGameOver()) {
         io.to(gameId).emit('message', {
@@ -151,6 +154,9 @@ io.on('connection', (socket) => {
 
     // Lorsque les joueurs envoient une proposition de réponse
     socket.on('guess', async ({playerName, guess}) => {
+        if (!currentGame._isRoundActive) {
+            return;
+        }
         let comparator = '';
         if (Number(guess) > currentGame._price) {
             comparator = ' 🔽';
@@ -167,10 +173,20 @@ io.on('connection', (socket) => {
         });
 
         if (currentGame._price === Number(guess)) {
+            // Arrêt du round en cours pour éviter les multiples réponses
+            let price = currentGame._price;
+            currentGame.endRound();
+
+            // Incrémentation du score
+            currentGame._scores.get(playerName).score++;
+
             io.to(gameId).emit('message', {
                 playerName: 'System',
-                msg: `Bonne réponse ! Le prix était de ${currentGame._price} !`
+                msg: `Bonne réponse de ${playerName} ! Le prix était de ${price} !`
             });
+
+            // Envoyer la mise à jour du leaderboard à tous les clients
+            io.to(gameId).emit('update leaderboard', currentGame.getLeaderboard());
         }
     });
 })
