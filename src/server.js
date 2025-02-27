@@ -130,7 +130,6 @@ io.on('connection', (socket) => {
 
     // Envoi de la manche déjà en cours (s'il y en a une)
     if (currentGame._isRoundActive) {
-        console.log("actif");
         socket.emit('new round', {
             roundNumber: currentGame._currentRound
         });
@@ -141,7 +140,6 @@ io.on('connection', (socket) => {
 
     // Vérification si la partie peut commencer
     if (Array.from(currentGame._scores.entries()).filter(([, data]) => data.connected).length >= MIN_PLAYERS && !currentGame._isRoundActive && !currentGame.isGameOver()) {
-        console.log("lancement");
         io.to(gameId).emit('message', {
             playerName: 'System',
             msg: 'La partie commence !'
