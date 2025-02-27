@@ -55,6 +55,35 @@ app.post('/:gameId/init', express.json(), (req, res) => {
     }
 });
 
+// Route pour rejoindre une partie
+app.get('/:gameId/:token', express.json(), (req, res) => {
+    const gameId = req.params.gameId;
+    const token = req.params.token;
+
+    // Vérifier si la partie existe
+    if (!games.has(gameId)) {
+        res.redirect('/404');
+        return;
+    }
+
+    // Vérifier si le token est valide en parcourant les joueurs
+    let playerFound = false;
+    let playerUuid = '';
+    games.get(gameId)._scores.forEach((playerData, playerName) => {
+        if (playerData.token === token) {
+            playerFound = true;
+            playerUuid = token;
+        }
+    });
+    if (playerFound) {
+        res.sendFile(path.join(__dirname, '../public', 'game.html'));
+    }
+    else {
+        // Rediriger vers une page 403 si le token n'est pas trouvé
+        res.redirect('/403');
+    }
+});
+
 // Route d'erreur 404 (page introuvable)
 app.get('/404', (req, res) => {
     res.sendFile(path.join(__dirname, '../public', '404.html'));
