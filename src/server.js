@@ -134,6 +134,19 @@ io.on('connection', (socket) => {
             roundNumber: currentGame._currentRound
         });
     }
+
+    // Vérification si la partie peut commencer
+    if (currentGame._scores.size >= MIN_PLAYERS && !currentGame._isRoundActive && !currentGame.isGameOver()) {
+        io.to(gameId).emit('message', {
+            playerName: 'System',
+            msg: 'La partie commence !'
+        });
+        currentGame.startNewRound(currentGame.getRandomPrice());
+        io.to(gameId).emit('new round', {
+            roundNumber: currentGame._currentRound,
+            price: currentGame._price
+        });
+    }
 })
 
 
