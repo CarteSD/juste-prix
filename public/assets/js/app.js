@@ -51,6 +51,14 @@ socket.on('message', ({playerName, msg, comparator}) => {
     if (playerName === 'System') {
         messageDiv.classList.add("text-center");
 
+        // Vérification du cas où le serveur annonce d'une bonne réponse proposée
+        if (msg.includes("Bonne réponse")) {
+            messageInput.disabled = true;
+            sendBtn.disabled = true;
+            sendBtn.classList.add("btn-disabled");
+            sendBtn.classList.remove("btn-primary");
+        }
+
         // Ajoute le contenu du message au paragraphe et ajoute le paragraphe à la div des messages
         messageDiv.innerText = msg;
         messagesDiv.appendChild(messageDiv);
