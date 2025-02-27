@@ -1,0 +1,32 @@
+{
+  "game": {
+    "name": "Juste prix",
+    "version": "1.0.0",
+    "description": "Montrez votre détermination et votre rapidité d'exécution en devinant un nombre généré aléatoirement.\nSuivez les indications retournées par le jeu afin de vous guider faire le montant correct.\nTrouvez le juste prix pour gagner des points et grimper dans le classement. Saurez-vous deviner avec précision ?",
+    "type": "single"
+  },
+  "settings": {
+    "minPlayers": 2,
+    "maxPlayers": 10,
+    "isNode": true,
+    "nodeServer": "https://localhost:3001",
+    "chatEnabled": true
+  },
+  "modifiableSettings": {
+    "nbRounds": {
+      "name": "Nombre de manches",
+      "description": "Nombre de manches à effectuer pour la partie",
+      "type": "number",
+      "default": 5,
+      "min": 1,
+      "max": 10
+    }
+  },
+  "neededParametersFromComus": [
+    "MODIFIED_SETTING_DATA"
+  ],
+  "returnParametersToComus": [
+    "SCORE",
+    "WINNER"
+  ]
+}
