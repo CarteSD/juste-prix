@@ -127,6 +127,13 @@ io.on('connection', (socket) => {
         playerName: 'System',
         msg: `${pseudonyme} a rejoint la partie !`,
     });
+
+    // Envoi de la manche déjà en cours (s'il y en a une)
+    if (currentGame._isRoundActive) {
+        socket.emit('new round', {
+            roundNumber: currentGame._currentRound
+        });
+    }
 })
 
 
