@@ -19,18 +19,17 @@
         <div id="chat-screen" class="dark:bg-night-1 bg-lavender-blush-1 p-8 rounded-lg shadow-md md:w-2/3 flex flex-col">
             <h1 class="text-2xl text-center mb-4 font-serif">Juste prix - Devine le montant</h1>
             <div class="flex justify-center items-center">
-                <img id="img-personality" src="" alt="image à deviner" class="w-32 hidden rounded-2xl mb-4 hover:scale-105 transition-all ease-in-out duration-300">
             </div>
             <div id="question" class="flex flex-col mb-4">
                 <h2 class="text-xl font-semibold text-center">La manche a commencé !</h2>
                 <p class="text-center">Le montant à deviner est compris entre 0 et 100</p>
             </div>
-            <div class="flex-1 overflow-y-auto mb-4 p-4 rounded-lg dark:bg-night-2 bg-lavender-blush-2 min-h-0 break-words">
+            <div class="flex flex-col h-full mb-4 p-4 rounded-lg dark:bg-night-2 bg-lavender-blush-2 min-h-0">
                 <div class="flex flex-col mb-4">
                     <p class="font-serif text-xl">Chat en direct :</p>
                     <p class="italic">Seuls les messages comportant uniquement des caractères numériques sont acceptés</p>
                 </div>
-                <div id="messages"></div>
+                <div id="messages" class="flex-1 overflow-y-auto break-words min-h-0"></div>
             </div>
             <div class="flex gap-2 items-center">
                 <div class="timer-wrapper">
