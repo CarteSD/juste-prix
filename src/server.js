@@ -203,9 +203,14 @@ io.on('connection', (socket) => {
             }, 1000);
 
             if (currentGame.isGameOver()) {
-                if (currentGame.endGame(io)) {
-
-                }
+                await currentGame.endGame(io);
+            } else {
+                setTimeout(() => {
+                    currentGame.startNewRound(currentGame.getRandomPrice());
+                    io.to(gameId).emit('new round', {
+                        roundNumber: currentGame._currentRound
+                    });
+                }, 3000);
             }
         }
     });
