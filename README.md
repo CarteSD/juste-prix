@@ -47,7 +47,7 @@ Pour déployer ou développer ce jeu, il est nécessaire d'avoir Node.js install
 1. Dupliquer le projet
 ```bash
 git clone https://github.com/CarteSD/juste-prix
-cd quiz
+cd juste-prix
 ```
 
 2. Installer les dépendances
