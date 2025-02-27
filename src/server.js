@@ -18,7 +18,7 @@ const io = new Server(server);
 const games = new Map();
 
 // Constantes uniques pour l'ensemble des parties
-const MIN_PLAYERS = 2;
+const MIN_PLAYERS = 1;
 const MAX_PLAYERS = 10;
 
 // Route pour initialiser une partie
@@ -147,6 +147,16 @@ io.on('connection', (socket) => {
             price: currentGame._price
         });
     }
+
+
+    // Lorsque les joueurs envoient une proposition de réponse
+    socket.on('guess', async ({playerName, number}) => {
+        // Envoi immédiat du message du joueur
+        io.to(gameId).emit('message', {
+            playerName: playerName,
+            msg: number,
+        });
+    });
 })
 
 
