@@ -158,10 +158,11 @@ io.on('connection', (socket) => {
             return;
         }
         let comparator = '';
+        let difference = Math.abs(Number(guess) - currentGame._price); // Récupère la valeur absolue de la différence entre la proposition de le prix à deviner
         if (Number(guess) > currentGame._price) {
-            comparator = ' 🔽';
+            comparator = difference >= 15 ? ' ⏬' : ' 🔽';
         } else if (Number(guess) < currentGame._price) {
-            comparator = ' 🔼';
+            comparator = difference >= 15 ? ' ⏫' : ' 🔼';
         } else {
             comparator = ' ✔';
         }
