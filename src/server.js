@@ -18,7 +18,7 @@ const io = new Server(server);
 const games = new Map();
 
 // Constantes uniques pour l'ensemble des parties
-const MIN_PLAYERS = 1;
+const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 10;
 
 // Route pour initialiser une partie
