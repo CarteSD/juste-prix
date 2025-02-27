@@ -20,10 +20,10 @@ let playerName = null;
 
 // Fonction permettant l'envoi du message au serveur via le socket
 function sendMessage() {
-    const number = messageInput.value.trim();
-    if (number) {
-        if (!isNaN(Number(number))) {
-            socket.emit('guess', {playerName, number});
+    const guess = messageInput.value.trim();
+    if (guess) {
+        if (!isNaN(Number(guess))) {
+            socket.emit('guess', {playerName, guess});
         }
         messageInput.value = '';
     }
@@ -69,5 +69,10 @@ socket.on('message', ({playerName, msg}) => {
         // Ajout du message entier à la div des messages
         messagesDiv.appendChild(messageParagraph);
     }
+    messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
+});
+
+socket.on('new round', ({roundNumber}) => {
+    messagesDiv.innerHTML += `<p class="font-bold">Manche n°${roundNumber}</p>`; // Affiche le numéro de la manche
     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
 });

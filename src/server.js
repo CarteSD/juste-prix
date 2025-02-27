@@ -142,20 +142,29 @@ io.on('connection', (socket) => {
             msg: 'La partie commence !'
         });
         currentGame.startNewRound(currentGame.getRandomPrice());
+        console.log(`[DEBUG] Nouveau prix : ${currentGame._price}`);
         io.to(gameId).emit('new round', {
-            roundNumber: currentGame._currentRound,
-            price: currentGame._price
+            roundNumber: currentGame._currentRound
         });
     }
 
 
     // Lorsque les joueurs envoient une proposition de réponse
-    socket.on('guess', async ({playerName, number}) => {
+    socket.on('guess', async ({playerName, guess}) => {
         // Envoi immédiat du message du joueur
         io.to(gameId).emit('message', {
             playerName: playerName,
-            msg: number,
+            msg: guess,
         });
+
+        if (currentGame._price === Number(guess)) {
+            console.log()
+            // Envoi de messages aux joueurs
+            io.to(gameId).emit('message', {
+                playerName: 'System',
+                msg: `Bonne réponse de ${playerName}, le prix était ${currentGame._price} !`
+            });
+        }
     });
 })
 
