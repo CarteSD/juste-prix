@@ -145,7 +145,6 @@ io.on('connection', (socket) => {
             msg: 'La partie commence !'
         });
         currentGame.startNewRound(currentGame.getRandomPrice());
-        console.log(`[DEBUG] Nouveau prix : ${currentGame._price}`);
         io.to(gameId).emit('new round', {
             roundNumber: currentGame._currentRound
         });
