@@ -28,7 +28,7 @@
             <div class="flex-1 overflow-y-auto mb-4 p-4 rounded-lg dark:bg-night-2 bg-lavender-blush-2 min-h-0 break-words">
                 <div class="flex flex-col mb-4">
                     <p class="font-serif text-xl">Chat en direct :</p>
-                    <p class="italic">Seuls les messages comportant uniquement des caractères numériques sont pris en compte</p>
+                    <p class="italic">Seuls les messages comportant uniquement des caractères numériques sont acceptés</p>
                 </div>
                 <div id="messages"></div>
             </div>
@@ -39,16 +39,14 @@
                     </div>
                 </div>
                 <input
-                        type="text"
+                        type="number"
                         id="message-input"
-                        placeholder="Écrivez une réponse"
+                        placeholder="Écrivez une valeur"
                         class="flex-1 input"
-                        disabled
                 >
                 <button
                         id="send-btn"
                         class="btn-primary"
-                        disabled
                 >
                     Envoyer
                 </button>
