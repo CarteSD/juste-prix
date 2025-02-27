@@ -2,10 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Juste prix - Devine le montant</title>
+    <link rel="stylesheet" href="/assets/css/builded.css">
 </head>
-<body>
+<body class="bg-lavender-blush-base dark:bg-night-base font-sans opacity-90 dark:text-lavender-blush-base text-night-base min-h-screen h-screen flex flex-col">
+<div class="w-full mx-auto p-4 flex-1 flex flex-col h-full">
+    <div class="flex flex-col md:flex-row gap-4 h-full">
+        <div id="leaderboard" class="dark:bg-night-1 bg-lavender-blush-1 p-8 rounded-lg shadow-md md:w-1/3">
+            <h1 class="text-2xl text-center mb-4 font-serif">Classement des joueurs</h1>
+            <div id="leaderboard-players">
 
+            </div>
+        </div>
+        <div id="chat-screen" class="dark:bg-night-1 bg-lavender-blush-1 p-8 rounded-lg shadow-md md:w-2/3 flex flex-col">
+            <h1 class="text-2xl text-center mb-4 font-serif">Juste prix - Devine le montant</h1>
+            <div class="flex justify-center items-center">
+                <img id="img-personality" src="" alt="image à deviner" class="w-32 hidden rounded-2xl mb-4 hover:scale-105 transition-all ease-in-out duration-300">
+            </div>
+            <div id="question" class="flex flex-col mb-4">
+                <h2 class="text-xl font-semibold text-center">La manche a commencé !</h2>
+                <p class="text-center">Le montant à deviner est compris entre 0 et 100</p>
+            </div>
+            <div
+                    id="messages"
+                    class="flex-1 overflow-y-auto mb-4 p-4 rounded-lg dark:bg-night-2 bg-lavender-blush-2 min-h-0 break-words">
+                <p class="font-serif text-xl">Propositions en direct :</p>
+            </div>
+            <div class="flex gap-2 items-center">
+                <div class="timer-wrapper">
+                    <div class="timer-circle">
+                        <div id="timer" class="timer-number"></div>
+                    </div>
+                </div>
+                <input
+                        type="text"
+                        id="message-input"
+                        placeholder="Écrivez une réponse"
+                        class="flex-1 input"
+                        disabled
+                >
+                <button
+                        id="send-btn"
+                        class="btn-primary"
+                        disabled
+                >
+                    Envoyer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/assets/js/app.js"></script>
 </body>
