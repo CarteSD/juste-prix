@@ -1,3 +1,5 @@
+import config from '../../config.json' with { type: 'json' };
+
 /**
  * @brief Classe JustePrix
  * @details Classe permettant de gérer une partie de juste prix
@@ -84,5 +86,102 @@ export class JustePrix {
      */
     getRandomPrice() {
         return Math.floor(Math.random() * 100);
+    }
+
+    /**
+     * @brief Termine la partie
+     * @param io Instance du serveur socket.io (utilisée pour envoyer des messages aux clients)
+     * @returns {Promise<boolean>} Vrai si les résultats ont été envoyés avec succès, faux sinon
+     */
+    async endGame(io) {
+        // Envoie un message à la room pour indiquer la fin de la partie
+        await this.sendDelayedMessage(io, {
+            playerName: 'System',
+            msg: 'Fin de la partie !'
+        }, 1000); // Attend 1 seconde avant d'envoyer le message
+
+        // Envoie un signal à la room pour indiquer la fin de la partie (permet de cacher certains éléments du DOM
+        io.to(this._id).emit('end game');
+
+        // Envoie un message à la room pour indiquer le classement final
+        await this.sendDelayedMessage(io, {
+            playerName: 'System',
+            msg: `Classement final :
+            - ${this.getLeaderboard()
+                .map(player => `${player.username} : ${player.score} point(s)`) // Affiche chacun des membres avec son score
+                .join('\n- ')}` // Sépare chaque membre par un retour à la ligne
+        }, 2500); // Attend 2.5 secondes avant d'envoyer le message
+
+        // Initialisation de la variable winner
+        let winner = null;
+
+        // Vérifie s'il y a au moins un joueur dans la partie
+        if (this.getLeaderboard().length === 0) {
+            console.error('Aucun joueur n\'a été trouvé dans le classement de la partie ' + this._id);
+        } else if (this.getLeaderboard().length === 1) {
+            await this.sendDelayedMessage(io, {
+                playerName: 'System',
+                msg: 'Vous êtes seul dans la partie, que faites-vous ici ?'
+            }, 1000);
+        } else {
+            // Vérification du cas exæquo total (aucun joueur n'a marqué de points ou tous les joueurs ont le même nombre de points)
+            if (this.getLeaderboard()[0].score === 0 || this.getLeaderboard()[0].score === this.getLeaderboard()[this.getLeaderboard().length - 1].score) {
+                await this.sendDelayedMessage(io, {
+                    playerName: 'System',
+                    msg: 'Tout le monde a le même score, quelle surprise !'
+                }, 1000);
+            }
+
+            // Vérification si plusieurs joueurs ont le même nombre de points
+            else {
+                // Récupère le meilleur score (le classement étant trié par ordre de score décroissant, le meilleur score est le premier)
+                let bestScore = this.getLeaderboard()[0].score;
+
+                // Récupère les joueurs ayant le meilleur score en les comparant à bestScore
+                winner = this.getLeaderboard().filter(player => player.score === bestScore).map(player => player.uuid);
+            }
+        }
+
+        // Envoie les résultats de la partie au serveur de Comus Party
+        let scores = Object.fromEntries([...this._scores].map(([_, playerData]) => [playerData.uuid, playerData.score]));
+        try {
+            let request = new FormData();
+            request.append('scores', JSON.stringify(scores));
+            request.append('winner', JSON.stringify(winner));
+
+            const response = await fetch(`${config.URL_COMUS}/game/${this._id}/end`, {
+                method: 'POST',
+                body: request
+            }).then(response => response.json());
+
+            if (!response.success) {
+                throw new Error(response.message);
+            }
+
+            console.log(`Résultat de la partie ${this._id} envoyé au serveur de Comus Party avec succès`);
+            return true;
+        } catch (error) {
+            console.error(`Erreur lors de l'envoi du résultat de la partie ${this._id} au serveur de Comus Party:`, error);
+            return false;
+        }
+    }
+
+    /**
+     * @brief Envoie un message à la room après un certain délai
+     * @param io Instance du serveur socket.io (utilisée pour envoyer des messages aux clients)
+     * @param message Message à envoyer
+     * @param delay Délai avant l'envoi du message
+     * @returns {Promise<unknown>} Promesse résolue lorsque le message est envoyé
+     */
+    sendDelayedMessage(io, message, delay) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                io.to(this._id).emit('message', {
+                    playerName: message.playerName,
+                    msg: message.msg
+                });
+                resolve();
+            }, delay);
+        });
     }
 }

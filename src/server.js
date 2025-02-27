@@ -201,6 +201,12 @@ io.on('connection', (socket) => {
                 playerName: 'System',
                 msg: `Votre score : ${currentGame._scores.get(playerName).score} point(s)`
             }, 1000);
+
+            if (currentGame.isGameOver()) {
+                if (currentGame.endGame(io)) {
+
+                }
+            }
         }
     });
 })
