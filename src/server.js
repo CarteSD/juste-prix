@@ -121,6 +121,12 @@ io.on('connection', (socket) => {
     socket.join(gameId);
     socket.username = pseudonyme;
     socket.emit('join', pseudonyme);
+
+    // Annonce dans le chat
+    socket.to(gameId).emit('message', {
+        playerName: 'System',
+        msg: `${pseudonyme} a rejoint la partie !`,
+    });
 })
 
 
