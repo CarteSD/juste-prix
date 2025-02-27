@@ -199,7 +199,7 @@ io.on('connection', (socket) => {
 
             await sendDelayedMessageToSocket({
                 playerName: 'System',
-                msg: `Votre score : ${currentGame.scores.get(playerName).score} point(s)`
+                msg: `Votre score : ${currentGame._scores.get(playerName).score} point(s)`
             }, 1000);
         }
     });
