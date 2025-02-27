@@ -151,18 +151,25 @@ io.on('connection', (socket) => {
 
     // Lorsque les joueurs envoient une proposition de réponse
     socket.on('guess', async ({playerName, guess}) => {
+        let comparator = '';
+        if (Number(guess) > currentGame._price) {
+            comparator = ' 🔽';
+        } else if (Number(guess) < currentGame._price) {
+            comparator = ' 🔼';
+        } else {
+            comparator = ' ✔';
+        }
         // Envoi immédiat du message du joueur
         io.to(gameId).emit('message', {
             playerName: playerName,
             msg: guess,
+            comparator: comparator
         });
 
         if (currentGame._price === Number(guess)) {
-            console.log()
-            // Envoi de messages aux joueurs
             io.to(gameId).emit('message', {
                 playerName: 'System',
-                msg: `Bonne réponse de ${playerName}, le prix était ${currentGame._price} !`
+                msg: `Bonne réponse ! Le prix était de ${currentGame._price} !`
             });
         }
     });

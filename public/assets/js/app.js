@@ -45,17 +45,20 @@ socket.on('join', (pseudonyme) => {
 });
 
 // Fonction traitant la réception du signal 'message' provenant du serveur
-socket.on('message', ({playerName, msg}) => {
-    let messageParagraph = document.createElement('p');
+socket.on('message', ({playerName, msg, comparator}) => {
+    let messageDiv = document.createElement('div');
     // Vérification si le message est envoyé par le système
     if (playerName === 'System') {
-        messageParagraph.classList.add("text-center");
+        messageDiv.classList.add("text-center");
 
         // Ajoute le contenu du message au paragraphe et ajoute le paragraphe à la div des messages
-        messageParagraph.innerText = msg;
-        messagesDiv.appendChild(messageParagraph);
+        messageDiv.innerText = msg;
+        messagesDiv.appendChild(messageDiv);
     }
     else { // Si ce n'est pas le système (donc un joueur)
+        messageDiv.classList.add("flex", "justify-between");
+        let messageParagraph = document.createElement('p');
+
         // Affichage du pseudonyme du joueur dans un span en gras
         let span = document.createElement('span');
         span.classList.add('font-bold');
@@ -63,11 +66,18 @@ socket.on('message', ({playerName, msg}) => {
         messageParagraph.appendChild(span);
 
         // Affichage du message du joueur à la suite du pseudonyme
-        let message = document.createTextNode(` : ${msg}`);
+        let message = document.createElement('span');
+        message.innerText = ` : ${msg}`;
         messageParagraph.appendChild(message);
 
+        let comparatorSpan = document.createElement('span');
+        comparatorSpan.innerText = comparator;
+
+        messageDiv.appendChild(messageParagraph);
+        messageDiv.appendChild(comparatorSpan);
+
         // Ajout du message entier à la div des messages
-        messagesDiv.appendChild(messageParagraph);
+        messagesDiv.appendChild(messageDiv);
     }
     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
 });
