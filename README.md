@@ -3,7 +3,7 @@ Ce jeu est dédié et créé pour fonctionner sur la plateforme de mini-jeux en 
 
 Comus Party est une application de mini-jeux en ligne, elle est développée dans le cadre de la SAE 3.01 du BUT Informatique à l'IUT de Bayonne et du Pays Basque.
 
-Ce jeu est un quiz de culture générale présentant différentes personnalités, que les joueurs doivent trouver. Au bout d'un certain nombre de manches, qui peut être définis par l'hôte de la partie, le joueur ayant le plus de points remporte la partie.
+Ce jeu est un jeu de type "Juste prix" mettant en confrontation plusieurs joueurs. Le but est de trouver un nombre aléatoire généré par le serveur de jeu, le plus rapidement possible.
 
 ## Déroulé d'une partie
 Lorsque l'hôte de la partie décide de lancer la partie sur la plateforme Comus Party, un `<iframe>` est affiché sur l'écran de chacun de joueurs, affichant ainsi le serveur de jeu.
