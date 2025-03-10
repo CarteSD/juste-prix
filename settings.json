@@ -14,8 +14,9 @@
     "allowJoinInProgress": false,
     "allowLeaveInProgress": true,
     "isNode": true,
-    "serverPort": 3001,
-    "serverAddress": "http://localhost"
+    "serverPort": null,
+    "serverAddress": null,
+    "serveByComus": true
   },
   "modifiableSettings": {
     "nbRounds": {
