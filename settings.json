@@ -28,7 +28,9 @@
     }
   },
   "neededParametersFromComus": [
-    "MODIFIED_SETTING_DATA"
+    "MODIFIED_SETTING_DATA",
+    "PLAYER_UUID",
+    "PLAYER_NAME"
   ],
   "returnParametersToComus": [
     "SCORES",
