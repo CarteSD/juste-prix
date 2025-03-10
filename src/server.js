@@ -1,17 +1,35 @@
 import express from "express";
-import {createServer} from "http";
+import { createServer as createHttpServer } from 'http';
+import { createServer as createHttpsServer } from 'https';
 import {Server} from "socket.io";
 import config from '../config.json' with { type: 'json' };
 import path from 'path';
 import { dirname } from 'path';
 import {fileURLToPath} from "url";
 import {JustePrix} from "./game/JustePrix.class.js";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+let options = null;
+if (config.SSL) {
+    options = {
+        key: fs.readFileSync('./privkey.pem', 'utf8'),
+        cert: fs.readFileSync('./fullchain.pem', 'utf8'),
+        ca: fs.readFileSync('./chain.pem', 'utf8')
+    };
+}
+
 const app = express();
-const server = createServer(app);
+
+let server;
+if (config.SSL) {
+    server = createHttpsServer(options, app);
+} else {
+    server = createHttpServer(app);
+}
+
 const io = new Server(server);
 
 // Stockage des différentes instances de jeu
