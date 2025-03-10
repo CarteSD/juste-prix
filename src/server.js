@@ -59,7 +59,7 @@ app.post('/:gameId/init', express.json(), (req, res) => {
         return;
     }
     try {
-        games.set(gameId, new JustePrix(gameId, settings.nbRounds, players));
+        games.set(gameId, new JustePrix(gameId, settings.nbRounds, players, settings.difficulty));
         res.status(200).json({
             success: true,
             message: 'Partie initialisée avec succès'

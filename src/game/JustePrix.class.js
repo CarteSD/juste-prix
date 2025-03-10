@@ -5,13 +5,14 @@ import config from '../../config.json' with { type: 'json' };
  * @details Classe permettant de gérer une partie de juste prix
  */
 export class JustePrix {
-    constructor(id, nbRounds = 5, players = []) {
+    constructor(id, nbRounds = 5, players = [], difficulty = "easy") {
         this._id = id;                          // Identifiant de la partie
         this._currentRound = 0;                 // Numéro de la manche actuelle
         this._isRoundActive = false;            // Indique si une manche est en cours
         this._nbRounds = nbRounds;               // Nombre de manches
         this._scores = new Map();               // Scores et autres informations à propos des participants
         this._price = null;                     // Prix à deviner
+        this._difficulty = difficulty;          // Difficulté de la partie
 
         // Initialisation des joueurs
         players.forEach(player => this.addPlayer(player));
@@ -82,10 +83,17 @@ export class JustePrix {
 
     /**
      * @brief Retourne un nombre aléatoire entre 0 et 1000
-     * @returns {number}
+     * @returns {number|float} Nombre aléatoire
      */
     getRandomPrice() {
-        return Math.floor(Math.random() * 100);
+        switch (this._difficulty) {
+            case "easy":
+                return Math.floor(Math.random() * 100);
+            case "medium":
+                return Math.floor(Math.random() * 500);
+            case "hard":
+                return parseFloat((Math.random() * 1000).toFixed(2));
+        }
     }
 
     /**
