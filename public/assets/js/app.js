@@ -102,6 +102,7 @@ socket.on('new round', ({roundNumber}) => {
     sendBtn.disabled = false;
     sendBtn.classList.remove("btn-disabled");
     sendBtn.classList.add("btn-primary");
+    messageInput.value = "";
     messageInput.focus();
     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
 });
