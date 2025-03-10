@@ -133,3 +133,7 @@ socket.on('update leaderboard', (leaderboard) => {
         leaderboard_players.appendChild(rowP);
     });
 });
+
+socket.on('redirect', data => {
+    window.parent.postMessage('redirectHome', data.url);
+})

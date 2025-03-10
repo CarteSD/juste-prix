@@ -221,7 +221,14 @@ io.on('connection', (socket) => {
             }, 1000);
 
             if (currentGame.isGameOver()) {
-                await currentGame.endGame(io);
+                if (await currentGame.endGame(io)) {
+                    setTimeout(() => {
+                        io.to(gameId).emit('redirect', {
+                            url: `${config.URL_COMUS}`,
+                        });
+                    }, 7500);
+                    games.delete(gameId);
+                }
             } else {
                 setTimeout(() => {
                     currentGame.startNewRound(currentGame.getRandomPrice());
