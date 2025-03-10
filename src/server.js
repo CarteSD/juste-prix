@@ -149,7 +149,8 @@ io.on('connection', (socket) => {
     // Envoi de la manche déjà en cours (s'il y en a une)
     if (currentGame._isRoundActive) {
         socket.emit('new round', {
-            roundNumber: currentGame._currentRound
+            roundNumber: currentGame._currentRound,
+            difficulty: currentGame._difficulty
         });
     }
 
@@ -164,7 +165,8 @@ io.on('connection', (socket) => {
         });
         currentGame.startNewRound(currentGame.getRandomPrice());
         io.to(gameId).emit('new round', {
-            roundNumber: currentGame._currentRound
+            roundNumber: currentGame._currentRound,
+            difficulty: currentGame._difficulty
         });
     }
 
@@ -233,7 +235,8 @@ io.on('connection', (socket) => {
                 setTimeout(() => {
                     currentGame.startNewRound(currentGame.getRandomPrice());
                     io.to(gameId).emit('new round', {
-                        roundNumber: currentGame._currentRound
+                        roundNumber: currentGame._currentRound,
+                        difficulty: currentGame._difficulty
                     });
                 }, 3000);
             }
