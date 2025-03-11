@@ -3,3 +3,4 @@ package-lock.json
 /public/assets/css/builded.css
 .idea
 settings.json
+config.json
