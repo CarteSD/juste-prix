@@ -162,7 +162,7 @@ export class JustePrix {
         ]));
         try {
             let request = new FormData();
-            request.append('token', JSON.stringify(this._token));
+            request.append('token', this._token);
             request.append('results', JSON.stringify(results));
 
             const response = await fetch(`${config.URL_COMUS}/game/${this._id}/end`, {
