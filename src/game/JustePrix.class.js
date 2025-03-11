@@ -5,14 +5,15 @@ import config from '../../config.json' with { type: 'json' };
  * @details Classe permettant de gérer une partie de juste prix
  */
 export class JustePrix {
-    constructor(id, nbRounds = 5, players = [], difficulty = "easy") {
+    constructor(id, nbRounds = 5, players = [], difficulty = "easy", token) {
         this._id = id;                          // Identifiant de la partie
         this._currentRound = 0;                 // Numéro de la manche actuelle
         this._isRoundActive = false;            // Indique si une manche est en cours
-        this._nbRounds = nbRounds;               // Nombre de manches
+        this._nbRounds = nbRounds;              // Nombre de manches
         this._scores = new Map();               // Scores et autres informations à propos des participants
         this._price = null;                     // Prix à deviner
         this._difficulty = difficulty;          // Difficulté de la partie
+        this._token = token;                    // Token unique pour identifier la partie via Comus Party
 
         // Initialisation des joueurs
         players.forEach(player => this.addPlayer(player));
@@ -151,11 +152,18 @@ export class JustePrix {
         }
 
         // Envoie les résultats de la partie au serveur de Comus Party
-        let scores = Object.fromEntries([...this._scores].map(([_, playerData]) => [playerData.uuid, playerData.score]));
+        let results = Object.fromEntries([...this._scores].map(([_, playerData]) => [
+            playerData.uuid,
+            {
+                token: playerData.token,
+                score: playerData.score,
+                winner: winner !== null && winner.includes(playerData.uuid)
+            }
+        ]));
         try {
             let request = new FormData();
-            request.append('scores', JSON.stringify(scores));
-            request.append('winner', JSON.stringify(winner));
+            request.append('token', JSON.stringify(this._token));
+            request.append('results', JSON.stringify(results));
 
             const response = await fetch(`${config.URL_COMUS}/game/${this._id}/end`, {
                 method: 'POST',

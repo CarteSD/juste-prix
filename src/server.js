@@ -43,7 +43,7 @@ const MAX_PLAYERS = 10;
 app.post('/:gameId/init', express.json(), (req, res) => {
 
     const gameId = req.params.gameId;
-    const { settings, players } = req.body;
+    const { token, settings, players } = req.body;
     if (players.length > MAX_PLAYERS) {
         res.status(409).json({
             success: false,
@@ -59,7 +59,7 @@ app.post('/:gameId/init', express.json(), (req, res) => {
         return;
     }
     try {
-        games.set(gameId, new JustePrix(gameId, settings.nbRounds, players, settings.difficulty));
+        games.set(gameId, new JustePrix(gameId, settings.nbRounds, players, settings.difficulty, token));
         res.status(200).json({
             success: true,
             message: 'Partie initialisée avec succès'
