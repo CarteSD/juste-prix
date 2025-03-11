@@ -18,6 +18,7 @@ const messageInput = document.getElementById('message-input');
 const messagesDiv = document.getElementById('messages');
 const sendBtn = document.getElementById('send-btn');
 const leaderboard_players = document.getElementById('leaderboard-players');
+const roundInfos = document.getElementById('round-infos');
 
 
 // Initialisation de la variable playerName
@@ -104,6 +105,7 @@ socket.on('new round', ({roundNumber, difficulty}) => {
     sendBtn.classList.add("btn-primary");
     messageInput.value = "";
     messageInput.focus();
+    roundInfos.innerText = `La manche a commencé !`;
     let divInfos = document.getElementById("difficulty-infos");
     divInfos.innerText = `Difficulté : ${difficulty}`;
     switch (difficulty) {
