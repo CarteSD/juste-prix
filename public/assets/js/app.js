@@ -43,7 +43,7 @@ messageInput.addEventListener('keypress', (e) => {
 });
 
 // Fonction traitant la réception du signal 'join' provenant du serveur
-socket.on('join', (pseudonyme) => {
+socket.on('join', (pseudonyme, difficulty) => {
     messagesDiv.innerHTML += `<p class="text-center">Vous avez rejoint la partie...</p>`;
     playerName = pseudonyme;
     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
@@ -95,7 +95,7 @@ socket.on('message', ({playerName, msg, comparator}) => {
     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
 });
 
-socket.on('new round', ({roundNumber}) => {
+socket.on('new round', ({roundNumber, difficulty}) => {
     messagesDiv.innerHTML += `<p class="font-bold">Manche n°${roundNumber}</p>`; // Affiche le numéro de la manche
     messagesDiv.innerHTML += `<p>Entrez votre proposition de prix...</p>`;
     messageInput.disabled = false;
@@ -104,6 +104,19 @@ socket.on('new round', ({roundNumber}) => {
     sendBtn.classList.add("btn-primary");
     messageInput.value = "";
     messageInput.focus();
+    let divInfos = document.getElementById("difficulty-infos");
+    divInfos.innerText = `Difficulté : ${difficulty}`;
+    switch (difficulty) {
+        case "easy":
+            divInfos.innerText += `\n\nLe montant à deviner est compris entre 0 et 100.`;
+            break;
+        case "medium":
+            divInfos.innerText += `\n\nLe montant à deviner est compris entre 0 et 500.`;
+            break;
+        case "hard":
+            divInfos.innerText += `\n\nLe montant à deviner est compris entre 0 et 1000 peut être décimal (deux chiffres après la virgule).`;
+            break;
+    }
     messagesDiv.scrollTop = messagesDiv.scrollHeight; // Permet de mettre le scroll en bas
 });
 

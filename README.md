@@ -70,7 +70,8 @@ npm run start
 ```json
 {
     "settings": {
-        "nbRounds": 5
+        "nbRounds": 5,
+        "difficulty": "easy"
     },
     "players": [
         { "username": "Jean", "uuid": "abc-123", "token": "token-abc-def" },
@@ -78,6 +79,11 @@ npm run start
     ]
 }
 ```
+
+La difficulté *(paramètre `difficulty`)* peut être de trois niveaux différents :
+- `easy` : Le nombre à trouver est compris entre 0 et 100
+- `medium` : Le nombre à trouver est compris entre 0 et 500
+- `hard` : Le nombre à trouver est compris entre 0 et 1000 et à la possibilité d'être décimal, avec deux chiffres après la virgule
 
 Le serveur de jeu est maintenant accessible à l'adresse `http://localhost:3001` *(ou bien au port indiqué dans le fichier `config.json`)*.
 
