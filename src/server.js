@@ -69,6 +69,15 @@ app.post('/:gameId/init', express.json(), (req, res) => {
                 return;
             }
         }
+        if (setting.type === "select") {
+            if (!setting.options.map(option => option.value).includes(settings[setting.name])) {
+                res.status(409).json({
+                    success: false,
+                    message: `La valeur de ${setting.name} n'est pas valide`
+                });
+                return;
+            }
+        }
     });
     try {
         games.set(gameId, new JustePrix(gameId, settings.nbRounds, players, settings.difficulty, token));
