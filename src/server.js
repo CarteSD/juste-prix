@@ -3,6 +3,7 @@ import { createServer as createHttpServer } from 'http';
 import { createServer as createHttpsServer } from 'https';
 import {Server} from "socket.io";
 import config from '../config.json' with { type: 'json' };
+import gameSettings from '../settings.json' with { type: 'json' };
 import path from 'path';
 import { dirname } from 'path';
 import {fileURLToPath} from "url";
@@ -58,6 +59,17 @@ app.post('/:gameId/init', express.json(), (req, res) => {
         });
         return;
     }
+    gameSettings.settings.forEach(setting => {
+        if (setting.type === "number") {
+            if (settings[setting.name] < setting.min || settings[setting.name] > setting.max) {
+                res.status(409).json({
+                    success: false,
+                    message: `La valeur de ${setting.name} doit être comprise entre ${setting.min} et ${setting.max}`
+                });
+                return;
+            }
+        }
+    });
     try {
         games.set(gameId, new JustePrix(gameId, settings.nbRounds, players, settings.difficulty, token));
         res.status(200).json({
