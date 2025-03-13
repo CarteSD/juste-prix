@@ -61,7 +61,7 @@ app.post('/:gameId/init', express.json(), (req, res) => {
     }
     gameSettings.modifiableSettings.forEach(setting => {
         if (setting.type === "number") {
-            if (settings[setting.name] < setting.min || settings[setting.name] > setting.max) {
+            if (settings[setting.name] <= setting.min || settings[setting.name] >= setting.max) {
                 res.status(409).json({
                     success: false,
                     message: `La valeur de ${setting.name} doit être comprise entre ${setting.min} et ${setting.max}`
