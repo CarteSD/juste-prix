@@ -59,7 +59,7 @@ app.post('/:gameId/init', express.json(), (req, res) => {
         });
         return;
     }
-    gameSettings.modifiableSettings.forEach(setting => {
+    Array.from(gameSettings.modifiableSettings).forEach(setting => {
         if (setting.type === "number") {
             if (settings[setting.name] <= setting.min || settings[setting.name] >= setting.max) {
                 res.status(409).json({
